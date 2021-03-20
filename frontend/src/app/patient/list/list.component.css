@@ -1,0 +1,15 @@
+.cdk-column-action {
+  width: 120px;
+  text-align: center;
+}
+
+.cdk-column-action > a > mat-icon {
+  vertical-align: middle;
+  color: #0d85e4;
+}
+
+td.mat-cell.cdk-column-first_name,
+td.mat-cell.cdk-column-middle_name,
+td.mat-cell.cdk-column-last_name {
+    text-transform: uppercase;
+}

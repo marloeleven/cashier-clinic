@@ -1,0 +1,150 @@
+<table class="patient-information">
+  <tr>
+    <th colspan="3">Patient Information</th>
+  </tr>
+  <tr>
+    <td>
+      <span class="label">Name</span>
+      <span class="value">{{ patientInfo.name }}</span>
+    </td>
+    <td>
+      <span class="label">Gender</span>
+      <span class="value">{{ GENDER_TYPES[patientInfo.gender] }}</span>
+    </td>
+    <td class="empty"></td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label">Birth Date</span>
+      <span class="value">{{
+        Format.displayDate(patientInfo.birth_date)
+      }}</span>
+    </td>
+    <td>
+      <span class="label">Age</span>
+      <span class="value">{{ patientInfo.ageDisplay }}</span>
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <span class="label">Contact Number</span>
+      <span class="value"> {{ patientInfo.contact_number }} </span>
+    </td>
+    <td *ngIf="patientInfo.idc_type && patientInfo.idc_number">
+      <span class="label">ID</span>
+      <span class="value">
+        {{ patientInfo.idc_type.name }}&nbsp;&nbsp;#{{ patientInfo.idc_number }}
+      </span>
+    </td>
+  </tr>
+</table>
+
+<h2 class="title">Patient Records</h2>
+<a
+  [routerLink]="['/patients', this.patientId, 'create']"
+  class="mat-icon-button"
+  mat-raised-button
+  color="primary"
+  js="create"
+>
+  Create New
+</a>
+
+<div class="compound-input-list">
+  <mat-form-field class="search-list">
+    <input
+      matInput
+      (keyup)="applyFilter($event.target.value)"
+      placeholder="Search"
+    />
+  </mat-form-field>
+
+  <mat-checkbox (change)="showDeleted($event)">Show Deleted</mat-checkbox>
+</div>
+
+<table
+  mat-table
+  [dataSource]="dataSource"
+  matSort
+  class="table-list"
+  matSortActive="created_at"
+  matSortDirection="desc"
+>
+  <ng-container matColumnDef="id">
+    <th mat-header-cell *matHeaderCellDef>ID</th>
+    <td mat-cell *matCellDef="let element; let i = index">{{ i + 1 }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="reference_number">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Ref #</th>
+    <td mat-cell *matCellDef="let element">{{ element.reference_number }}</td>
+  </ng-container>
+
+  <ng-container matColumnDef="created_at">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Date</th>
+    <td mat-cell *matCellDef="let element">
+      {{ Format.displayDate(element.created_at) }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="discount_value">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Discount (%)</th>
+    <td mat-cell *matCellDef="let element" class="discount">
+      <div>
+        <span [hidden]="!element.discount_type && !element.discounted_amount">{{
+          discountDisplay(element)
+        }}</span>
+        <span [hidden]="!element.discount_type && !element.discounted_amount">{{
+          Format.money(element.discounted_amount)
+        }}</span>
+      </div>
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="total">
+    <th mat-header-cell *matHeaderCellDef mat-sort-header>Total</th>
+    <td mat-cell *matCellDef="let element">
+      {{ Format.money(element.total) }}
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="action">
+    <th mat-header-cell *matHeaderCellDef>Action</th>
+    <td mat-cell *matCellDef="let element">
+      <button mat-icon-button color="accent">
+        <mat-icon
+          aria-label="View"
+          matTooltip="View"
+          (click)="showDialog(element)"
+          >visibility</mat-icon
+        >
+      </button>
+      <button
+        mat-icon-button
+        color="warn"
+        *ngIf="userService.isAdmin() && !filterDeleted"
+      >
+        <mat-icon
+          aria-label="Delete"
+          matTooltip="Delete"
+          (click)="deleteDialog(element)"
+          >delete</mat-icon
+        >
+      </button>
+
+      <button mat-icon-button color="accent" *ngIf="filterDeleted">
+        <mat-icon
+          aria-label="Restore"
+          matTooltip="Restore"
+          (click)="restoreDialog(element)"
+          >restore_from_trash</mat-icon
+        >
+      </button>
+    </td>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+</table>
+
+<mat-paginator [pageSizeOptions]="[25, 50, 75, 100]"></mat-paginator>

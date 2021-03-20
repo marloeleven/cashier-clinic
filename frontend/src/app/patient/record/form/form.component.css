@@ -1,0 +1,104 @@
+.mat-dialog-container {
+  min-width: 700px;
+}
+
+.user-info {
+  margin-bottom: 0;
+  padding: 0;
+  box-shadow: none;
+}
+
+.user-info th {
+  padding-bottom: 5px;
+}
+
+.user-info .label {
+  padding-bottom: 0;
+}
+
+.user-info .info .label {
+  display: inline-block;
+  padding-right: 10px;
+  width: 100px;
+  text-align: right;
+}
+
+.user-info .value {
+  font-size: 11px;
+}
+
+.user-info td:not(.empty) {
+  padding: 0 5px;
+}
+
+.user-info .amount {
+  text-align: right;
+}
+
+.hidden {
+  display: none;
+}
+
+.procedures,
+.procedures ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+}
+
+.procedures li {
+  padding: 0 5px 5px;
+  font-size: 14px;
+  font-size: 12px;
+}
+
+.procedures li.type {
+  font-weight: bold;
+  border-bottom: 1px solid black;
+  margin-bottom: 5px;
+  margin: 20px 0 10px;
+}
+
+.procedures li .name {
+  max-width: 70%;
+  display: inline-block;
+}
+
+.procedures li .amount {
+  float: right;
+}
+
+.procedures h3 {
+  margin: 0;
+  font-weight: normal;
+}
+
+.procedures > .title {
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.procedures .category ul {
+  padding-top: 5px;
+}
+
+.procedures .category h3,
+.procedures .category li {
+  font-size: 11px;
+}
+
+.procedures .array li .name {
+  font-style: italic;
+}
+
+.overflow {
+  overflow-y: auto;
+  max-height: 300px;
+}
+
+@media screen and (min-height: 900px) {
+  .overflow {
+    overflow-y: auto;
+    max-height: 500px;
+  }
+}

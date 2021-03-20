@@ -1,0 +1,40 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form (submit)="submit($event, type)">
+  <input type="hidden" name="id" value="{{ formData.id }}">
+  <mat-form-field>
+    <input matInput name="username" type="text" placeholder="Username" value="{{ formData.username }}" required
+      autofocus>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="first_name" type="text" placeholder="First Name" value="{{ formData.first_name }}" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="middle_name" type="text" placeholder="Middle Name" value="{{ formData.middle_name }}">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="last_name" type="text" placeholder="Last Name" value="{{ formData.last_name }}" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="email" type="text" placeholder="Email" value="{{ formData.email }}">
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select placeholder="Gender" name="gender" [value]="formData.gender" #gender required>
+      <mat-option *ngFor="let gender of GENDER_TYPES" [value]="gender.key">
+        {{gender.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select placeholder="User Type" name="type" [value]="formData.type" #userType required>
+      <mat-option *ngFor="let user_type of USER_TYPES" [value]="user_type.key">
+        {{user_type.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary">Yes</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

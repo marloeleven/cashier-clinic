@@ -1,0 +1,74 @@
+<table class="user-info">
+  <tr>
+    <th>{{ title }}</th>
+  </tr>
+  <tr>
+    <td class="info">
+      <span class="label">Attending Physician</span>
+      <span class="value">{{ formData.attending_physician }}</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="info">
+      <span class="label">Cashier</span>
+      <span class="value">{{ formData.cashier.full_name }}</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="info">
+      <span class="label">Date</span>
+      <span class="value">{{ Format.dateTime(formData.created_at) }}</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="amount">
+      <span class="value">{{ Format.money(formData.original_amount) }}</span>
+      <span class="label">Original Amount</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="amount">
+      <span class="value">
+        <span [hidden]="!formData.discounted_amount">
+          {{ discountDisplay(formData) }}
+          {{ Format.money(formData.discounted_amount) }}
+        </span>
+        <span [hidden]="formData.discounted_amount">{{
+          Format.money(formData.discounted_amount)
+        }}</span>
+      </span>
+      <span class="label">Discounted Amount</span>
+    </td>
+  </tr>
+  <tr>
+    <td class="amount">
+      <span class="value">{{ Format.money(formData.total) }}</span>
+      <span class="label">Total</span>
+    </td>
+  </tr>
+</table>
+
+<div class="overflow">
+  <ul class="procedures" *ngFor="let procedure of proceduresArray">
+    <li class="title">{{ PROCEDURE_TYPES[procedure.category] }}</li>
+    <li *ngFor="let category of procedure.array" class="category">
+      <ul>
+        <li class="array">
+          <h3>{{ category.category }}</h3>
+          <ul>
+            <li *ngFor="let data of category.array" class="array">
+              <span class="name">{{ data.name }}</span>
+              <span class="amount">{{ Format.money(data.amount) }}</span>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </li>
+  </ul>
+</div>
+<mat-dialog-actions>
+  <button mat-button mat-raised-button color="accent" (click)="print()">
+    Print
+  </button>
+  <button mat-raised-button mat-dialog-close>Close</button>
+</mat-dialog-actions>

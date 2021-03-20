@@ -1,0 +1,14 @@
+<div class="login">
+  <mat-card>
+    <form class="login-form" (submit)="login($event)">
+      <img class="picture" src="assets/images/gs.png">
+      <mat-form-field hideRequiredMarker>
+        <input matInput name="username" type="text" placeholder="Username" required autofocus>
+      </mat-form-field>
+      <mat-form-field hideRequiredMarker>
+        <input matInput name="password" type="password" placeholder="Password" autocomplete="off" required>
+      </mat-form-field>
+      <button mat-raised-button color="primary" #submit>Login</button>
+    </form>
+  </mat-card>
+</div>

@@ -1,0 +1,14 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form (submit)="submit($event, type)">
+  <input type="hidden" name="id" value="{{ formData.id }}">
+  <mat-form-field>
+    <input matInput name="title" type="text" placeholder="Name" value="{{ formData.title }}" required>
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput name="body" type="text" placeholder="Message" value="{{ formData.body }}" required></textarea>
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary">Yes</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

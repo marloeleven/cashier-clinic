@@ -1,0 +1,166 @@
+.hide {
+  display: none !important;
+}
+
+/* STEPPER */
+
+.stepper {
+  min-height: -webkit-fill-available;
+}
+
+.disabled {
+  pointer-events: none;
+}
+
+form .content {
+  margin-bottom: 30px;
+}
+
+.information .mat-form-field {
+  width: 100%;
+}
+
+/* PROCEDURES */
+
+.content.procedures {
+  display: flex;
+}
+
+.right,
+.left {
+  flex-grow: 1;
+  height: 100%;
+  max-width: 50%;
+  padding: 10px;
+  min-height: 500px;
+}
+
+.left {
+  border-right: 1px solid #ececec;
+}
+
+.content.procedures .left h3.title {
+  margin: 0;
+  padding-top: 15px;
+  padding-bottom: 10px;
+  width: 100%;
+  border-bottom: 1px solid #ececec;
+  color: #909090;
+  font-weight: 100;
+}
+
+.mat-tab-body-wrapper {
+  padding: 10px;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+}
+
+.procedures li,
+.procedures li label {
+  cursor: pointer;
+  display: block;
+}
+
+.procedures li label {
+  padding-bottom: 3px;
+}
+
+.procedures li:hover {
+  background-color: #f7f7f7;
+}
+
+.expansion {
+  padding-top: 10px;
+}
+
+.procedureListing {
+  font-size: 11px;
+  padding-top: 10px;
+}
+
+.procedureListing h3 {
+  margin: 0;
+  padding: 5px 10px;
+}
+
+.procedureListing li.title {
+  pointer-events: none;
+  font-size: 12px;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.overflow .bill li,
+.procedureListing .category .array ul li {
+  padding: 5px 20px;
+  font-style: italic;
+  color: #888;
+}
+
+.procedureListing .category .array ul li .amount {
+  float: right;
+}
+
+.overflow .bill {
+  font-size: 11px;
+  padding-top: 10px;
+  margin-top: 10px;
+  border-top: 1px dashed #bdbdbd;
+}
+
+.overflow .bill li {
+  text-align: right;
+}
+
+.overflow .bill li .amount {
+  min-width: 100px;
+  display: inline-block;
+}
+
+.overflow .bill li.total {
+  color: #333;
+}
+
+.mat-label-form-field {
+  display: table;
+}
+
+.mat-form-field,
+.mat-label-form-field {
+  min-width: 200px;
+  font-size: 12px;
+}
+
+/* RIGHT SIDE */
+
+.procedures .right .amount {
+  float: right;
+}
+
+.procedures .right li {
+  font-size: 12px;
+}
+
+.procedures .right .mat-expansion-panel-header {
+  font-size: 13px;
+  max-height: 40px;
+  font-weight: bold;
+}
+
+/* SAVE AND PRINT */
+
+.content.save .divider {
+  display: flex;
+}
+
+.content.save .divider .left {
+  flex-grow: 0.2;
+}
+
+.content.save .mat-label-form-field .value {
+  white-space: pre;
+}

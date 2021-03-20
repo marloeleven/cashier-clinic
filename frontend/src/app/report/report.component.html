@@ -1,0 +1,135 @@
+<div class="content procedures">
+  <div class="left">
+    <h3 class="title" [class.hidden]="!userService.isAdmin()">
+      Filter Report
+    </h3>
+    <ul class="range" [class.hidden]="!userService.isAdmin()">
+      <li>
+        <mat-form-field>
+          <mat-select
+            placeholder="Cashier"
+            name="cashier"
+            value="{{ initial.cashier_id }}"
+            #cashier
+          >
+            <mat-option *ngFor="let cashier of cashiers" [value]="cashier.key">
+              {{ cashier.value }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </li>
+    </ul>
+    <h3 class="title">Date Range</h3>
+    <ul class="range">
+      <li>
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="from"
+            name="from"
+            placeholder="Date From"
+            value="{{ initial.from }}"
+            required
+          />
+          <mat-datepicker-toggle matSuffix [for]="from"></mat-datepicker-toggle>
+          <mat-datepicker #from></mat-datepicker>
+        </mat-form-field>
+      </li>
+      <li>
+        <mat-form-field>
+          <input
+            matInput
+            [matDatepicker]="to"
+            name="to"
+            placeholder="Date To"
+            value="{{ initial.to }}"
+            required
+          />
+          <mat-datepicker-toggle matSuffix [for]="to"></mat-datepicker-toggle>
+          <mat-datepicker #to></mat-datepicker>
+        </mat-form-field>
+      </li>
+    </ul>
+    <h3 class="title">Selected Procedures</h3>
+    <div class="overflow">
+      <div *ngIf="selectedProcedures.length">
+        <ul
+          class="procedureListing"
+          *ngFor="let category of getKeys(categorizedProcedures)"
+        >
+          <li class="title">{{ PROCEDURE_TYPES[category] }}</li>
+          <li
+            *ngFor="let subCategory of categorizedProcedures[category]"
+            class="category"
+          >
+            <ul>
+              <li class="array">
+                <h3>{{ subCategory.name }}</h3>
+                <ul>
+                  <li *ngFor="let data of subCategory.procedures" class="array">
+                    <span class="name">{{ data.name }}</span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="right">
+    <mat-tab-group>
+      <mat-tab
+        label="{{ PROCEDURE_TYPES[procedureKey] }}"
+        *ngFor="let procedureKey of PROCEDURE_TYPES_KEYS"
+      >
+        <div class="expansion">
+          <mat-accordion>
+            <mat-expansion-panel
+              *ngFor="
+                let subCategory of proceduresArray[procedureKey];
+                let i = index
+              "
+              [expanded]="i === 0"
+            >
+              <mat-expansion-panel-header>
+                <mat-panel-title>
+                  <input
+                    type="checkbox"
+                    class="checkbox-theme"
+                    (click)="$event.stopPropagation()"
+                    (change)="checkAll($event, subCategory.procedures)"
+                  />
+                  <span>{{ subCategory.name }}</span>
+                </mat-panel-title>
+              </mat-expansion-panel-header>
+
+              <ng-template matExpansionPanelContent>
+                <ul>
+                  <li *ngFor="let data of subCategory.procedures">
+                    <label class="data">
+                      <input
+                        type="checkbox"
+                        class="checkbox-theme"
+                        name="data.id"
+                        [attr.checked]="isSelected(data.id)"
+                        (change)="change($event, data)"
+                      />
+                      <span class="name">{{ data.name }}</span>
+                    </label>
+                  </li>
+                </ul>
+              </ng-template>
+            </mat-expansion-panel>
+          </mat-accordion>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+<div>
+  <button mat-button mat-raised-button color="accent" (click)="export()">
+    Export
+  </button>
+</div>

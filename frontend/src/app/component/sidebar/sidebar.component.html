@@ -1,0 +1,86 @@
+<div class="sidebar" [class.minimize]="this.minimize">
+  <ul class="list">
+    <li class="minimize">
+      <button (click)="toggleSidebar()">
+        <mat-icon class="tab" matTooltip="Expand">tab</mat-icon>
+        <mat-icon class="clear" matTooltip="Collapse">clear</mat-icon>
+      </button>
+    </li>
+    <li class="picture"><img src="assets/images/gs.png" class="picture" /></li>
+    <li class="username center">
+      <span>{{ name }}</span>
+    </li>
+    <li class="user-type center">
+      <span>{{ userType }}</span>
+    </li>
+
+    <li class="title navigation">Navigation</li>
+
+    <li class="link">
+      <a routerLink="/">
+        <mat-icon matTooltip="Dashboard">home</mat-icon>
+        <span>Dashboard</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="userService.isAdmin()">
+      <a routerLink="/admin/announcement">
+        <mat-icon matTooltip="Announcement">calendar_today</mat-icon>
+        <span>Announcement</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="userService.isAdmin()">
+      <a routerLink="/admin/users">
+        <mat-icon matTooltip="Users">people</mat-icon>
+        <span>Users</span>
+      </a>
+    </li>
+    <li class="link">
+      <a routerLink="/patients">
+        <mat-icon matTooltip="Patients">face</mat-icon>
+        <span>Patients</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="userService.isAdmin()">
+      <a routerLink="/admin/categories">
+        <mat-icon matTooltip="Categories">storage</mat-icon>
+        <span>Categories</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="userService.isAdmin()">
+      <a routerLink="/admin/procedures">
+        <mat-icon matTooltip="Procedures">local_hospital</mat-icon>
+        <span>Procedures</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="userService.isAdmin()">
+      <a routerLink="/admin/lookup">
+        <mat-icon matTooltip="Lookup">import_contacts</mat-icon>
+        <span>Lookup</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="userService.isAdmin()">
+      <a routerLink="/admin/report">
+        <mat-icon matTooltip="Report">file_copy</mat-icon>
+        <span>Report</span>
+      </a>
+    </li>
+    <li class="link" *ngIf="!userService.isAdmin()">
+      <a routerLink="/cashier/report">
+        <mat-icon matTooltip="Report">file_copy</mat-icon>
+        <span>Report</span>
+      </a>
+    </li>
+    <li class="link">
+      <a routerLink="/settings">
+        <mat-icon matTooltip="Settings">settings</mat-icon>
+        <span>Settings</span>
+      </a>
+    </li>
+    <li class="link">
+      <a routerLink="/logout">
+        <mat-icon matTooltip="Log Out">power_settings_new</mat-icon>
+        <span>Log Out</span>
+      </a>
+    </li>
+  </ul>
+</div>

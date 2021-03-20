@@ -1,0 +1,377 @@
+<mat-horizontal-stepper labelPosition="bottom" linear #stepper class="stepper">
+  <mat-step [stepControl]="infoFormGroup" class="information">
+    <form [formGroup]="infoFormGroup">
+      <ng-template matStepLabel>Record Information</ng-template>
+      <div class="content">
+        <div class="mat-label-form-field">
+          <span class="label">Name:</span>
+          <span class="value">{{ patientInfo.name }}</span>
+        </div>
+        <div class="mat-label-form-field">
+          <span class="label">Gender:</span>
+          <span class="value">{{ Format.gender(patientInfo.gender) }}</span>
+        </div>
+        <div class="mat-label-form-field">
+          <span class="label">Birthdate:</span>
+          <span class="value">{{
+            Format.displayDate(patientInfo.birth_date)
+          }}</span>
+        </div>
+        <div class="mat-label-form-field" [ngClass]="{ hide: !isSenior }">
+          <mat-checkbox
+            (change)="compute()"
+            name="senior_citizen_discount"
+            formControlName="senior_citizen_discount"
+            [(ngModel)]="patientRecord.senior_citizen_discount"
+            >Add Senior Citizen Discount</mat-checkbox
+          >
+        </div>
+        <div class="mat-label-form-field">
+          <span class="label">Contact Number:</span>
+          <span class="value">{{ patientInfo.contact_number }}</span>
+        </div>
+        <div class="mat-label-form-field">
+          <span class="label">ID:</span>
+          <span class="value">{{ Format.id(patientInfo) }}</span>
+        </div>
+
+        <mat-form-field>
+          <input
+            type="text"
+            matInput
+            required
+            [(ngModel)]="patientRecord.attending_physician"
+            [matAutocomplete]="auto"
+            [formControl]="myControl"
+            formControlName="attending_physician"
+            placeholder="Requesting Physician"
+          />
+        </mat-form-field>
+
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of (filteredOptions | async)"
+            [value]="option.attending_physician"
+            >{{ option.attending_physician }}</mat-option
+          >
+        </mat-autocomplete>
+
+        <br />
+        <mat-form-field>
+          <input
+            matInput
+            required
+            formControlName="reference_number"
+            [(ngModel)]="patientRecord.reference_number"
+            placeholder="Reference Number"
+          />
+        </mat-form-field>
+
+        <br />
+        <mat-form-field>
+          <mat-select
+            formControlName="discount_type_lookup_table_id"
+            value="0"
+            (selectionChange)="discountChange($event)"
+            placeholder="Discount Type"
+          >
+            <mat-option
+              *ngFor="let discount of discountArray"
+              [value]="discount.id"
+            >
+              {{ discount.name }}
+              <span *ngIf="discount.id">({{ discount.amount }}%)</span>
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+        <br />
+        <mat-form-field *ngIf="patientRecord.discount_type_lookup_table_id">
+          <textarea
+            matInput
+            [required]="patientRecord.discount_type_lookup_table_id > 0"
+            [(ngModel)]="patientRecord.comment"
+            formControlName="comment"
+            placeholder="Reason"
+            style="resize: none"
+          ></textarea>
+        </mat-form-field>
+      </div>
+      <div class="button">
+        <button
+          mat-button
+          matStepperNext
+          mat-raised-button
+          color="primary"
+          (click)="getFormValidationErrors()"
+        >
+          Next
+        </button>
+      </div>
+    </form>
+  </mat-step>
+
+  <mat-step
+    [stepControl]="proceduresFormGroup"
+    [completed]="!!this.selectedProcedures.length"
+  >
+    <ng-template matStepLabel>Add Procedures</ng-template>
+    <div class="content procedures">
+      <div class="left">
+        <h3 class="title">Selected Procedures</h3>
+        <div class="overflow">
+          <div *ngIf="selectedProcedures.length">
+            <ul
+              class="procedureListing"
+              *ngFor="let category of getKeys(categorizedProcedures)"
+            >
+              <li class="title">{{ PROCEDURE_TYPES[category] }}</li>
+              <li
+                *ngFor="let subCategory of categorizedProcedures[category]"
+                class="category"
+              >
+                <ul>
+                  <li class="array">
+                    <h3>{{ subCategory.name }}</h3>
+                    <ul>
+                      <li
+                        *ngFor="let data of subCategory.procedures"
+                        class="array"
+                      >
+                        <span class="name">{{ data.name }}</span>
+                        <span class="amount">{{
+                          Format.money(data.amount)
+                        }}</span>
+                      </li>
+                    </ul>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+          <ul class="bill">
+            <li>
+              <span class="name">Original Amount</span>
+              <span class="amount">{{ Format.money(originalAmount) }}</span>
+            </li>
+            <li>
+              <span class="name">Discounted Amount</span>
+              <span class="amount"
+                >{{ getDiscountValue() }} &nbsp;
+                {{ Format.money(discountedAmount) }}
+              </span>
+            </li>
+            <li class="total">
+              <span class="name">Total</span>
+              <span class="amount">{{ Format.money(totalAmount) }}</span>
+            </li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="right">
+        <mat-tab-group>
+          <mat-tab
+            label="{{ PROCEDURE_TYPES[procedureKey] }}"
+            *ngFor="let procedureKey of PROCEDURE_TYPES_KEYS"
+          >
+            <div class="expansion">
+              <mat-accordion>
+                <mat-expansion-panel
+                  *ngFor="
+                    let subCategory of proceduresArray[procedureKey];
+                    let i = index
+                  "
+                  [expanded]="i === 0"
+                >
+                  <mat-expansion-panel-header>
+                    <mat-panel-title>
+                      <input
+                        type="checkbox"
+                        class="checkbox-theme"
+                        (click)="$event.stopPropagation()"
+                        (change)="checkAll($event, subCategory.procedures)"
+                      />
+                      <span>{{ subCategory.name }}</span>
+                    </mat-panel-title>
+                  </mat-expansion-panel-header>
+
+                  <ng-template matExpansionPanelContent>
+                    <ul>
+                      <li *ngFor="let data of subCategory.procedures">
+                        <label class="data">
+                          <input
+                            type="checkbox"
+                            class="checkbox-theme"
+                            name="data.id"
+                            [attr.checked]="isSelected(data.id)"
+                            (change)="change($event, data)"
+                          />
+                          <span class="name">{{ data.name }}</span>
+                          <span class="amount">{{
+                            Format.money(data.amount)
+                          }}</span>
+                        </label>
+                      </li>
+                    </ul>
+                  </ng-template>
+                </mat-expansion-panel>
+              </mat-accordion>
+            </div>
+          </mat-tab>
+        </mat-tab-group>
+      </div>
+    </div>
+    <div>
+      <button mat-button matStepperPrevious mat-raised-button color="accent">
+        Back
+      </button>
+      &nbsp;&nbsp;&nbsp;
+      <button mat-button matStepperNext mat-raised-button color="primary">
+        Next
+      </button>
+    </div>
+  </mat-step>
+
+  <mat-step>
+    <ng-template matStepLabel>Save & Print</ng-template>
+    <div class="content save">
+      <div class="divider">
+        <div class="left">
+          <div class="mat-label-form-field">
+            <span class="label">Name:</span>
+            <span class="value">{{ patientInfo.name }}</span>
+          </div>
+          <div class="mat-label-form-field">
+            <span class="label">Gender:</span>
+            <span class="value">{{ Format.gender(patientInfo.gender) }}</span>
+          </div>
+          <div class="mat-label-form-field">
+            <span class="label">Birthdate:</span>
+            <span class="value">{{
+              Format.displayDate(patientInfo.birth_date)
+            }}</span>
+          </div>
+          <div class="mat-label-form-field">
+            <span class="label">Contact Number:</span>
+            <span class="value">{{ patientInfo.contact_number }}</span>
+          </div>
+          <div class="mat-label-form-field">
+            <span class="label">ID:</span>
+            <span class="value">{{ Format.id(patientInfo) }}</span>
+          </div>
+
+          <div class="mat-label-form-field">
+            <span class="label">Requesting Physician:</span>
+            <span class="value">{{
+              infoFormGroup.value.attending_physician
+            }}</span>
+          </div>
+
+          <div class="mat-label-form-field">
+            <span class="label">Reference Number:</span>
+            <span class="value"
+              >#{{ infoFormGroup.value.reference_number }}</span
+            >
+          </div>
+
+          <div
+            class="mat-label-form-field"
+            *ngIf="infoFormGroup.value.discount_type_lookup_table_id"
+          >
+            <span class="label">Discount:</span>
+            <span class="value">{{
+              Format.discount(
+                discountArray,
+                infoFormGroup.value.discount_type_lookup_table_id
+              )
+            }}</span>
+          </div>
+
+          <div
+            class="mat-label-form-field"
+            *ngIf="infoFormGroup.value.discount_type_lookup_table_id"
+          >
+            <span class="label">Reason:</span>
+            <span class="value">{{ infoFormGroup.value.comment }}</span>
+          </div>
+        </div>
+        <div class="right">
+          <div class="overflow">
+            <div *ngIf="selectedProcedures.length">
+              <ul
+                class="procedureListing"
+                *ngFor="let category of getKeys(categorizedProcedures)"
+              >
+                <li class="title">{{ PROCEDURE_TYPES[category] }}</li>
+                <li
+                  *ngFor="let subCategory of categorizedProcedures[category]"
+                  class="category"
+                >
+                  <ul>
+                    <li class="array">
+                      <h3>{{ subCategory.name }}</h3>
+                      <ul>
+                        <li
+                          *ngFor="let data of subCategory.procedures"
+                          class="array"
+                        >
+                          <span class="name">{{ data.name }}</span>
+                          <span class="amount">{{
+                            Format.money(data.amount)
+                          }}</span>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+            <ul class="bill">
+              <li>
+                <span class="name">Original Amount</span>
+                <span class="amount">{{ Format.money(originalAmount) }}</span>
+              </li>
+              <li>
+                <span class="name">Discounted Amount</span>
+                <span class="amount"
+                  >{{ getDiscountValue() }} &nbsp;
+                  {{ Format.money(discountedAmount) }}
+                </span>
+              </li>
+              <li class="total">
+                <span class="name">Total</span>
+                <span class="amount">{{ Format.money(totalAmount) }}</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="unsaved" *ngIf="!patientRecord.id">
+          <button
+            mat-button
+            matStepperPrevious
+            mat-raised-button
+            color="accent"
+          >
+            Back
+          </button>
+          &nbsp;&nbsp;&nbsp;
+          <button mat-button mat-raised-button color="primary" (click)="save()">
+            Save
+          </button>
+        </div>
+        <button
+          mat-button
+          mat-raised-button
+          color="primary"
+          (click)="print()"
+          *ngIf="patientRecord.id"
+        >
+          Print
+        </button>
+      </div>
+    </div>
+  </mat-step>
+</mat-horizontal-stepper>

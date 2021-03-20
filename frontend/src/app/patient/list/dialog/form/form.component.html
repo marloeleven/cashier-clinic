@@ -1,0 +1,96 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form (submit)="submit($event, type)">
+  <input type="hidden" name="id" value="{{ formData.id }}" />
+  <mat-form-field>
+    <input
+      matInput
+      name="first_name"
+      type="text"
+      placeholder="First Name"
+      value="{{ formData.first_name }}"
+      required
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      name="middle_name"
+      type="text"
+      placeholder="Middle Name"
+      value="{{ formData.middle_name }}"
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      name="last_name"
+      type="text"
+      placeholder="Last Name"
+      value="{{ formData.last_name }}"
+      required
+    />
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      name="birth_date"
+      placeholder="Birth Date"
+      [matDatepicker]="picker"
+      required
+      value="{{ formData.birth_date }}"
+    />
+    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+    <mat-datepicker #picker></mat-datepicker>
+  </mat-form-field>
+  <mat-form-field>
+    <mat-select
+      placeholder="Gender"
+      name="gender"
+      value="{{ formData.gender }}"
+      required
+      #gender
+    >
+      <mat-option *ngFor="let gender of GENDER_TYPES" [value]="gender.key">
+        {{ gender.value }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input
+      matInput
+      name="contact_number"
+      type="text"
+      placeholder="Contact Number"
+      value="{{ formData.contact_number }}"
+      required
+    />
+  </mat-form-field>
+
+  <mat-form-field>
+    <mat-select
+      placeholder="ID Type"
+      name="idc_type_lookup_table_id"
+      value="{{ formData.idc_type_lookup_table_id }}"
+      #idc_type_lookup_table_id
+    >
+      <mat-option *ngFor="let idType of idTypeArray" [value]="idType.value">
+        {{ idType.name }}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input
+      matInput
+      name="idc_number"
+      type="text"
+      placeholder="ID Number"
+      value="{{ formData.idc_number }}"
+    />
+  </mat-form-field>
+
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary">Yes</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

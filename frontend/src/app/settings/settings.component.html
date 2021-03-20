@@ -1,0 +1,15 @@
+<form (submit)="formSubmit($event)">
+  <h4>Password Update</h4>
+  <mat-form-field>
+    <input matInput name="password" type="password" placeholder="Old Password" autocomplete="off" required autofocus>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput name="new" type="password" placeholder="New Password" autocomplete="off" required>
+  </mat-form-field>
+
+  <mat-form-field>
+    <input matInput name="confirm" type="password" placeholder="Confirm New Password" autocomplete="off" required>
+  </mat-form-field>
+  <button mat-raised-button color="primary" #submit>Update</button>
+</form>

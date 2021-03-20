@@ -1,0 +1,31 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form (submit)="submit($event, type)">
+  <input type="hidden" name="id" value="{{ formData.id }}">
+  <mat-form-field>
+    <mat-select placeholder="Type" name="lookupType" [value]="formData.type"
+      #lookupType required>
+      <mat-option *ngFor="let lookupType of LOOKUP_TYPES" [value]="lookupType.key">
+        {{lookupType.value}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="name" type="text" placeholder="Name" value="{{ formData.name }}" required>
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput name="details" type="text" placeholder="Details" value="{{ formData.details }}"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="amount" type="text" placeholder="Amount" value="{{ formData.amount }}">
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="index" type="text" placeholder="Index" value="{{ formData.index }}">
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button
+      mat-raised-button
+      color="primary"
+    >Yes</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>

@@ -1,0 +1,10 @@
+<section id="announcements">
+  <h2>Announcements</h2>
+  <div *ngFor="let announcement of annoucementsArray; let i = index" class="announcement" [class.expand]="i < 5"
+    (click)="toggleExpand($event)">
+    <h4 class="title">{{ announcement.title }} <span class="date">{{ Format.displayDate(announcement.created_at)}}</span></h4>
+    <div class="body">
+      {{ announcement.body }}
+    </div>
+  </div>
+</section>

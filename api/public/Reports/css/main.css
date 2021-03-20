@@ -1,0 +1,217 @@
+* {
+  font-family: 'Arial', Arial, 'Helvetica', 'sans-serif';
+}
+
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  page-break-before: always;
+}
+
+.table:first-child {
+  page-break-before: none;
+  page-break-inside: avoid;
+}
+
+.table .header {
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.table .header-description {
+  font-size: 16px;
+}
+
+.table .header td:last-child,
+.table .header-description td:last-child {
+  text-align: right;
+}
+
+.table .contact {
+  font-size: 14px;
+  padding-bottom: 5px;
+}
+
+.table .info {
+  font-size: 15px;
+}
+
+.table .info .name {
+  text-transform: uppercase;
+}
+
+.table .info .name span {
+  text-transform: normal;
+}
+
+.table .info td {
+  width: 250px;
+  height: 15px;
+  padding: 0;
+  line-height: 20px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table .info span {
+  color: #333;
+}
+
+.table .info.last td {
+  border-bottom: 1px solid black;
+  padding-bottom: 5px;
+}
+
+.clinical_history {
+	font-size: 13px;
+}
+
+/*
+ GENERIC
+*/
+
+.table.generic .data {
+  height: 330px;
+  border: 1px solid black;
+  border-right-width: 0;
+  border-left-width: 0;
+  padding: 10px;
+  font-size: 15px;
+  display: block;
+}
+
+.table.generic .data .list {
+  width: 100%;
+  white-space: nowrap;
+}
+
+/*
+  ECG
+*/
+
+.table.ecg .data table {
+  padding: 20px;
+  font-size: 14px;
+}
+
+.table.ecg .data td {
+  width: 340px;
+}
+
+.table.ecg .data td.remarks {
+  padding-left: 10px;
+}
+
+.table.ecg .data td.signature {
+  text-align: center;
+}
+
+.table.ecg .data td.signature span {
+  width: 340px;
+  border-top: 1px solid black;
+  display: inline-block;
+}
+
+/*
+  Laboratory
+*/
+
+.table.laboratory .data .fields {
+  width: 420px;
+  vertical-align: top;
+  padding-left: 20px;
+  font-size: 15px;
+}
+
+.table.laboratory .data .clinical-history {
+  width: 350px;
+  font-size: 14px;
+  padding-left: 10px;
+  border-left: 1px solid black;
+}
+
+.table.laboratory .data .clinical-history td {
+  width: 175px;
+}
+
+/*
+  cbc
+*/
+
+.table.cbc .data .fields {
+  vertical-align: middle;
+}
+
+.table.cbc .data .fields td {
+  width: 400px;
+  height: 30px;
+}
+
+.table.cbc .data .fields label {
+  display: inline-block;
+  width: 75px;
+}
+
+.table.cbc .data .vertical-lines span.first {
+  width: 110px;
+}
+
+.table.cbc .data .vertical-lines span {
+  display: inline-block;
+  height: 80px;
+  width: 60px;
+  border-right: 1px solid black;
+}
+
+/*
+  Parasitology
+*/
+
+.table.parasitology .data .fields {
+  vertical-align: middle;
+}
+
+.table.parasitology .data .fields td {
+  height: 40px;
+}
+
+.table.parasitology .data .fields ul {
+  list-style-type: none;
+}
+
+/*
+  Serology
+*/
+
+.table.serology .data .fields td {
+  height: 100px;
+  vertical-align: top;
+}
+
+.table.serology .data .fields td.blood-type {
+  height: 14px;
+}
+
+/*
+  Urinalysis
+*/
+.table.urinalysis .data .fields {
+  vertical-align: middle;
+}
+
+.table.urinalysis .data .fields td {
+  height: 30px;
+  text-align: center;
+  width: 340px;
+}
+
+.table.urinalysis .data .fields td.upreg {
+  padding-top: 20px;
+  height: 50px;
+}
+
+.table.chemistry .data .fields {
+  padding-left: 0;
+  width: 440px;
+}

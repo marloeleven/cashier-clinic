@@ -1,0 +1,9 @@
+/vendor
+/node_modules
+
+api/vendor
+frontend/node_modules
+
+*.txt
+api/goodsphepherd
+*.gvdesign

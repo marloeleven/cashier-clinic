@@ -1,0 +1,30 @@
+<h2 mat-dialog-title>{{ title }}</h2>
+<form (submit)="submit($event, type)">
+  <input type="hidden" name="id" value="{{ formData.id }}">
+  <mat-form-field>
+    <mat-select placeholder="Procedure Type" name="procedure_type_categories_id" [value]="formData.procedure_type_categories_id"
+      #procedure_type_categories_id required>
+      <mat-optgroup *ngFor="let group of categoriesArray" [label]="PROCEDURE_TYPES[group.name]">
+        <mat-option *ngFor="let procedure of group.array" [value]="procedure.id">
+          {{PROCEDURE_TYPES[group.name]}} - {{procedure.name}}
+        </mat-option>
+      </mat-optgroup>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="name" type="text" placeholder="Name" value="{{ formData.name }}" required>
+  </mat-form-field>
+  <mat-form-field>
+    <textarea matInput name="details" type="text" placeholder="Details" value="{{ formData.details }}"></textarea>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="amount" type="text" placeholder="Amount" value="{{ formData.amount }}" required>
+  </mat-form-field>
+  <mat-form-field>
+    <input matInput name="sort" type="text" placeholder="Index" value="{{ formData.sort }}" required>
+  </mat-form-field>
+  <mat-dialog-actions>
+    <button mat-raised-button color="primary">Yes</button>
+    <button mat-raised-button mat-dialog-close>Cancel</button>
+  </mat-dialog-actions>
+</form>
